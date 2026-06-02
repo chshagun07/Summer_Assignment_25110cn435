@@ -1,4 +1,4 @@
-\\Program to find sum of digits of number
+//Program to find sum of digits of number
 #include <stdio.h>
 int main()
 {
@@ -17,7 +17,7 @@ return 0;
 }
 
 
-\\Program to reverse a number
+//Program to reverse a number
 #include <stdio.h>
 int main()
 {
@@ -34,7 +34,7 @@ return 0;
 }
 
 
-\\Program to find product of digits
+//Program to find product of digits
 #include <stdio.h>
 int main()
 {
