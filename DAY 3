@@ -1,0 +1,118 @@
+//Program to check whether a number is prime
+#include <stdio.h>
+int main()
+{
+    int n, i, flag = 1;
+   printf("Enter a number: ");
+    scanf("%d", &n);
+
+    if(n <= 1)
+    {
+        flag = 0;
+    }
+    else
+    {
+        for(i = 2; i <= n / 2; i++)
+        {
+            if(n % i == 0)
+            {
+                flag = 0;
+                break;
+            }
+        }
+    }
+    if(flag == 1)
+        printf("%d is a Prime Number.", n);
+    else
+        printf("%d is not a Prime Number.", n);
+    return 0;
+}
+
+
+//Program to print prime numbers in range
+#include <stdio.h>
+int main() 
+{
+    int lower, upper, i, j, isPrime;
+
+    
+    printf("Enter lower limit: ");
+    scanf("%d", &lower);
+    printf("Enter upper limit: ");
+    scanf("%d", &upper);
+
+    printf("Prime numbers between %d and %d are:\n", lower, upper);
+
+    for (i = lower; i <= upper; i++) {
+        if (i <= 1) {
+            continue; 
+        }
+        isPrime = 1;     
+        for (j = 2; j < i; j++) {
+            if (i % j == 0) {
+                isPrime = 0; 
+                break;      
+            }
+        }
+        if (isPrime == 1) {
+            printf("%d ", i);
+        }
+    }
+    printf("\n");
+    return 0;
+}
+
+
+// Program to find GCD (Greatest Common Divisor) of two numbers
+
+#include <stdio.h>
+int main()
+{
+    int num1, num2, i, gcd;
+    printf("Enter first number: ");
+    scanf("%d", &num1);
+
+    printf("Enter second number: ");
+    scanf("%d", &num2);
+
+    for(i = 1; i <= num1 && i <= num2; i++)
+    {
+        if(num1 % i == 0 && num2 % i == 0)
+        {
+            gcd = i;
+        }
+    }
+    printf("GCD of %d and %d = %d", num1, num2, gcd);
+
+    return 0;
+}
+
+
+// Program to find LCM (Least Common Multiple) of two numbers
+
+#include <stdio.h>
+int main()
+{
+    int num1, num2, max, lcm;
+
+    printf("Enter first number: ");
+    scanf("%d", &num1);
+
+    printf("Enter second number: ");
+    scanf("%d", &num2);
+
+    max = (num1 > num2) ? num1 : num2;
+
+    while(1)
+    {
+        if(max % num1 == 0 && max % num2 == 0)
+        {
+            lcm = max;
+            break;
+        }
+        max++;
+    }
+    printf("LCM of %d and %d = %d", num1, num2, lcm);
+
+    return 0;
+}
