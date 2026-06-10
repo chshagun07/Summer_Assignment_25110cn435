@@ -1,0 +1,97 @@
+//Program to print star pyramid
+    *
+   ***
+  *****
+ *******
+*********
+#include <stdio.h>
+int main() {
+
+    for (int i = 1; i <= 5; i++) {
+        
+        for (int space = 1; space <= 5 - i; space++) {
+            printf(" ");
+        }
+        for (int j = 1; j <= (2 * i - 1); j++) {
+            printf("*");
+        }
+        printf("\n");
+    }
+    return 0;
+} 
+
+
+//Program to print reverse pyramid pattern
+*********
+ *******
+  *****
+   ***
+    *
+#include <stdio.h>
+int main() {
+    for (int i = 5; i >= 1; i--) {
+        
+        for (int space = 0; space < 5 - i; space++) {
+            printf(" ");
+        }
+        for (int j = 1; j <= (2 * i - 1); j++) {
+            printf("*");
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+
+//Program to print number pyramid
+    1
+   121
+  12321
+ 1234321
+123454321
+#include <stdio.h>
+int main() {
+    for (int i = 1; i <= 5; i++) {
+        for (int j = 1; j <= 5 - i; j++) {
+            printf(" ");
+        }
+        for (int j = 1; j <= i; j++) {
+            printf("%d", j);
+        }
+        for (int j = i - 1; j >= 1; j--) {
+            printf("%d", j);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+
+//Program to print character pyramid 
+    A
+   ABA
+  ABCBA
+ ABCDCBA
+ABCDEDCBA
+#include <stdio.h>
+int main() {
+
+    for (int i = 1; i <= 5; i++) {
+        for (int space = 1; space <= 5 - i; space++) {
+            printf(" ");
+        }
+        char ch = 'A';
+        for (int j = 1; j <= i; j++) {
+            printf("%c", ch);
+            ch++;
+        }
+        ch -= 2; 
+        for (int j = 1; j < i; j++) {
+            printf("%c", ch);
+            ch--;
+        }
+        printf("\n");
+    }
+    return 0;
+}
