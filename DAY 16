@@ -1,0 +1,127 @@
+// Program to Find Missing Number in Array.
+#include <stdio.h>
+int main() {
+    int arr[100], n, i;
+    int expectedSum = 0, actualSum = 0, missing;
+
+    printf("Enter the value of n: ");
+    scanf("%d", &n);
+
+    printf("Enter %d elements (one number missing from 1 to %d):\n", n - 1, n);
+
+    for (i = 0; i < n - 1; i++) {
+        scanf("%d", &arr[i]);
+        actualSum += arr[i];
+    }
+
+    expectedSum = n * (n + 1) / 2;
+    missing = expectedSum - actualSum;
+
+    printf("Missing Number = %d\n", missing);
+
+    return 0;
+}
+
+
+// Program to Find Maximum Frequency Element.
+#include <stdio.h>
+int main() {
+    int arr[100], n, i, j;
+    int maxCount = 0, element;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter %d elements:\n", n);
+
+    for (i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+
+    for (i = 0; i < n; i++) {
+        int count = 1;
+
+        for (j = i + 1; j < n; j++) {
+            if (arr[i] == arr[j])
+                count++;
+        }
+
+        if (count > maxCount) {
+            maxCount = count;
+            element = arr[i];
+        }
+    }
+
+    printf("Element with Maximum Frequency = %d\n", element);
+    printf("Frequency = %d\n", maxCount);
+
+    return 0;
+}
+
+
+// Program to Find Pair with Given Sum.
+#include <stdio.h>
+int main() {
+    int arr[100], n, i, j, sum;
+    int found = 0;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter %d elements:\n", n);
+
+    for (i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+
+    printf("Enter the required sum: ");
+    scanf("%d", &sum);
+
+    printf("Pairs with sum %d are:\n", sum);
+
+    for (i = 0; i < n; i++) {
+        for (j = i + 1; j < n; j++) {
+            if (arr[i] + arr[j] == sum) {
+                printf("(%d, %d)\n", arr[i], arr[j]);
+                found = 1;
+            }
+        }
+    }
+
+    if (!found)
+        printf("No pair found.\n");
+
+    return 0;
+}
+
+
+// Program to Remove Duplicates from Array.
+#include <stdio.h>
+int main() {
+    int arr[100], n, i, j, k;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter %d elements:\n", n);
+
+    for (i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+
+    for (i = 0; i < n; i++) {
+        for (j = i + 1; j < n; j++) {
+            if (arr[i] == arr[j]) {
+                for (k = j; k < n - 1; k++)
+                    arr[k] = arr[k + 1];
+                n--;
+                j--;
+            }
+        }
+    }
+
+    printf("Array after removing duplicates:\n");
+
+    for (i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+
+    return 0;
+}
+
