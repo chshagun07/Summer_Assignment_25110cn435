@@ -1,0 +1,133 @@
+// Program to Check if One String is a Rotation of Another String.
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str1[100], str2[100], temp[201];
+
+    printf("Enter first string: ");
+    fgets(str1, sizeof(str1), stdin);
+    str1[strcspn(str1, "\n")] = '\0';
+
+    printf("Enter second string: ");
+    fgets(str2, sizeof(str2), stdin);
+    str2[strcspn(str2, "\n")] = '\0';
+
+    if (strlen(str1) != strlen(str2)) {
+        printf("Strings are not rotations.\n");
+        return 0;
+    }
+
+    strcpy(temp, str1);
+    strcat(temp, str1);
+
+    if (strstr(temp, str2))
+        printf("Strings are rotations.\n");
+    else
+        printf("Strings are not rotations.\n");
+
+    return 0;
+}
+
+
+// Program to Compress a String.
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str[100], compressed[200];
+    int comp_index = 0;
+
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = '\0';
+
+    int n = strlen(str);
+
+    for (int i = 0; i < n; i++) {
+        int count = 1;
+
+        while (i < n - 1 && str[i] == str[i + 1]) {
+            count++;
+            i++;
+        }
+
+        comp_index += sprintf(&compressed[comp_index], "%c%d", str[i], count);
+    }
+
+    compressed[comp_index] = '\0';
+
+    printf("Compressed string: %s\n", compressed);
+
+    return 0;
+}
+
+
+// Program to Find the Longest Word in a Sentence.
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str[200], longest[50] = "";
+    int maxLen = 0;
+
+    printf("Enter a sentence: ");
+    fgets(str, sizeof(str), stdin);
+
+    char *word = strtok(str, " \t\n.,!?;:");
+
+    while (word != NULL) {
+        int len = strlen(word);
+
+        if (len > maxLen) {
+            maxLen = len;
+            strcpy(longest, word);
+        }
+
+        word = strtok(NULL, " \t\n.,!?;:");
+    }
+
+    printf("Longest word: %s\n", longest);
+    printf("Length: %d\n", maxLen);
+
+    return 0;
+}
+
+
+
+// Program to Remove Duplicate Characters from a String.
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str[100];
+
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = '\0';
+
+    int n = strlen(str);
+    int unique_index = 0;
+
+    for (int i = 0; i < n; i++) {
+        int duplicate = 0;
+
+        for (int j = 0; j < i; j++) {
+            if (str[i] == str[j]) {
+                duplicate = 1;
+                break;
+            }
+        }
+
+        if (!duplicate) {
+            str[unique_index] = str[i];
+            unique_index++;
+        }
+    }
+
+    str[unique_index] = '\0';
+
+    printf("Result string: %s\n", str);
+
+    return 0;
+}
