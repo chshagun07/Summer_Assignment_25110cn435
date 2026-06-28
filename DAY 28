@@ -1,0 +1,720 @@
+// Program to Create Library Management System.
+#include <stdio.h>
+#define MAX_BOOKS 100
+
+struct Book {
+    int id;
+    char title[50];
+    char author[50];
+    int available;
+};
+
+int main() {
+    struct Book book[MAX_BOOKS];
+    int choice, count = 0;
+
+    while (1) {
+
+        printf("\n===== Library Management System =====\n");
+        printf("1. Add Book\n");
+        printf("2. Display All Books\n");
+        printf("3. Issue Book\n");
+        printf("4. Return Book\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (choice) {
+
+            case 1:
+
+                if (count >= MAX_BOOKS) {
+                    printf("Library is full!\n");
+                    break;
+                }
+
+                while (1) {
+                    int duplicate = 0;
+
+                    printf("Enter Book ID: ");
+
+                    if (scanf("%d", &book[count].id) != 1) {
+                        printf("Invalid Book ID!\n");
+                        while (getchar() != '\n');
+                        continue;
+                    }
+
+                    for (int i = 0; i < count; i++) {
+                        if (book[i].id == book[count].id) {
+                            duplicate = 1;
+                            break;
+                        }
+                    }
+
+                    if (duplicate) {
+                        printf("Book ID already exists!\n");
+                        continue;
+                    }
+
+                    break;
+                }
+
+                printf("Enter Book Title: ");
+                scanf(" %49[^\n]", book[count].title);
+
+                printf("Enter Author Name: ");
+                scanf(" %49[^\n]", book[count].author);
+
+                book[count].available = 1;
+
+                count++;
+
+                printf("Book added successfully.\n");
+                break;
+
+            case 2:
+
+                if (count == 0) {
+                    printf("No books available.\n");
+                } else {
+
+                    printf("\n========== Library Books ==========\n");
+
+                    for (int i = 0; i < count; i++) {
+
+                        printf("\nBook %d\n", i + 1);
+                        printf("Book ID   : %d\n", book[i].id);
+                        printf("Title     : %s\n", book[i].title);
+                        printf("Author    : %s\n", book[i].author);
+
+                        if (book[i].available)
+                            printf("Status    : Available\n");
+                        else
+                            printf("Status    : Issued\n");
+
+                        printf("-----------------------------------\n");
+                    }
+                }
+
+                break;
+
+            case 3: {
+
+                int id, found = 0;
+
+                printf("Enter Book ID to Issue: ");
+                scanf("%d", &id);
+
+                for (int i = 0; i < count; i++) {
+
+                    if (book[i].id == id) {
+
+                        found = 1;
+
+                        if (book[i].available) {
+                            book[i].available = 0;
+                            printf("Book issued successfully.\n");
+                        } else {
+                            printf("Book is already issued.\n");
+                        }
+
+                        break;
+                    }
+                }
+
+                if (!found)
+                    printf("Book not found.\n");
+
+                break;
+            }
+
+            case 4: {
+
+                int id, found = 0;
+
+                printf("Enter Book ID to Return: ");
+                scanf("%d", &id);
+
+                for (int i = 0; i < count; i++) {
+
+                    if (book[i].id == id) {
+
+                        found = 1;
+
+                        if (!book[i].available) {
+                            book[i].available = 1;
+                            printf("Book returned successfully.\n");
+                        } else {
+                            printf("Book is already available.\n");
+                        }
+
+                        break;
+                    }
+                }
+
+                if (!found)
+                    printf("Book not found.\n");
+
+                break;
+            }
+
+            case 5:
+                printf("Thank you for using the Library Management System.\n");
+                return 0;
+
+            default:
+                printf("Invalid choice! Please enter 1 to 5.\n");
+        }
+    }
+
+    return 0;
+}
+
+
+
+// Program to Create Bank Account System.
+#include <stdio.h>
+#define MAX_ACCOUNTS 100
+
+struct Account {
+    int accountNo;
+    char name[50];
+    float balance;
+};
+
+int main() {
+    struct Account acc[MAX_ACCOUNTS];
+    int choice, count = 0, accountNo, found;
+    float amount;
+
+    while (1) {
+
+        printf("\n===== Bank Account System =====\n");
+        printf("1. Create Account\n");
+        printf("2. Display All Accounts\n");
+        printf("3. Deposit Money\n");
+        printf("4. Withdraw Money\n");
+        printf("5. Check Balance\n");
+        printf("6. Exit\n");
+
+        printf("Enter your choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (choice) {
+
+            case 1:
+
+                if (count >= MAX_ACCOUNTS) {
+                    printf("Bank database is full!\n");
+                    break;
+                }
+
+                while (1) {
+
+                    int duplicate = 0;
+
+                    printf("Enter Account Number: ");
+
+                    if (scanf("%d", &acc[count].accountNo) != 1) {
+                        printf("Invalid Account Number!\n");
+                        while (getchar() != '\n');
+                        continue;
+                    }
+
+                    for (int i = 0; i < count; i++) {
+                        if (acc[i].accountNo == acc[count].accountNo) {
+                            duplicate = 1;
+                            break;
+                        }
+                    }
+
+                    if (duplicate) {
+                        printf("Account Number already exists!\n");
+                        continue;
+                    }
+
+                    break;
+                }
+
+                printf("Enter Account Holder Name: ");
+                scanf(" %49[^\n]", acc[count].name);
+
+                while (1) {
+
+                    printf("Enter Initial Balance: ");
+
+                    if (scanf("%f", &acc[count].balance) != 1) {
+                        printf("Invalid amount!\n");
+                        while (getchar() != '\n');
+                        continue;
+                    }
+
+                    if (acc[count].balance < 0) {
+                        printf("Balance cannot be negative.\n");
+                        continue;
+                    }
+
+                    break;
+                }
+
+                count++;
+
+                printf("Account created successfully.\n");
+                break;
+
+            case 2:
+
+                if (count == 0) {
+                    printf("No accounts found.\n");
+                } else {
+
+                    printf("\n========== Bank Accounts ==========\n");
+
+                    for (int i = 0; i < count; i++) {
+
+                        printf("\nAccount %d\n", i + 1);
+                        printf("Account No : %d\n", acc[i].accountNo);
+                        printf("Name       : %s\n", acc[i].name);
+                        printf("Balance    : %.2f\n", acc[i].balance);
+                        printf("-----------------------------------\n");
+                    }
+                }
+
+                break;
+
+            case 3:
+
+                printf("Enter Account Number: ");
+                scanf("%d", &accountNo);
+
+                found = 0;
+
+                for (int i = 0; i < count; i++) {
+
+                    if (acc[i].accountNo == accountNo) {
+
+                        found = 1;
+
+                        printf("Enter Deposit Amount: ");
+
+                        scanf("%f", &amount);
+
+                        if (amount <= 0) {
+                            printf("Invalid amount.\n");
+                        } else {
+                            acc[i].balance += amount;
+                            printf("Amount deposited successfully.\n");
+                            printf("Updated Balance: %.2f\n", acc[i].balance);
+                        }
+
+                        break;
+                    }
+                }
+
+                if (!found)
+                    printf("Account not found.\n");
+
+                break;
+
+            case 4:
+
+                printf("Enter Account Number: ");
+                scanf("%d", &accountNo);
+
+                found = 0;
+
+                for (int i = 0; i < count; i++) {
+
+                    if (acc[i].accountNo == accountNo) {
+
+                        found = 1;
+
+                        printf("Enter Withdrawal Amount: ");
+                        scanf("%f", &amount);
+
+                        if (amount <= 0) {
+                            printf("Invalid amount.\n");
+                        }
+                        else if (amount > acc[i].balance) {
+                            printf("Insufficient Balance.\n");
+                        }
+                        else {
+                            acc[i].balance -= amount;
+                            printf("Withdrawal successful.\n");
+                            printf("Remaining Balance: %.2f\n", acc[i].balance);
+                        }
+
+                        break;
+                    }
+                }
+
+                if (!found)
+                    printf("Account not found.\n");
+
+                break;
+
+            case 5:
+
+                printf("Enter Account Number: ");
+                scanf("%d", &accountNo);
+
+                found = 0;
+
+                for (int i = 0; i < count; i++) {
+
+                    if (acc[i].accountNo == accountNo) {
+
+                        found = 1;
+
+                        printf("\nAccount Holder : %s\n", acc[i].name);
+                        printf("Current Balance: %.2f\n", acc[i].balance);
+
+                        break;
+                    }
+                }
+
+                if (!found)
+                    printf("Account not found.\n");
+
+                break;
+
+            case 6:
+                printf("Thank you for using the Bank Account System.\n");
+                return 0;
+
+            default:
+                printf("Invalid choice! Please enter 1 to 6.\n");
+        }
+    }
+
+    return 0;
+}
+
+
+
+// Program to Create Ticket Booking System.
+
+#include <stdio.h>
+
+#define MAX_TICKETS 50
+
+struct Ticket {
+    int seatNo;
+    char name[50];
+    int booked;
+};
+
+int main() {
+    struct Ticket ticket[MAX_TICKETS];
+    int choice, seatNo, found;
+
+    for (int i = 0; i < MAX_TICKETS; i++) {
+        ticket[i].seatNo = i + 1;
+        ticket[i].booked = 0;
+    }
+
+    while (1) {
+
+        printf("\n===== Ticket Booking System =====\n");
+        printf("1. View Available Seats\n");
+        printf("2. Book Ticket\n");
+        printf("3. Cancel Ticket\n");
+        printf("4. Display Booked Tickets\n");
+        printf("5. Exit\n");
+
+        printf("Enter your choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (choice) {
+
+            case 1:
+
+                printf("\nAvailable Seats:\n");
+
+                for (int i = 0; i < MAX_TICKETS; i++) {
+                    if (!ticket[i].booked)
+                        printf("Seat %d\n", ticket[i].seatNo);
+                }
+
+                break;
+
+            case 2:
+
+                printf("Enter Seat Number (1-%d): ", MAX_TICKETS);
+
+                if (scanf("%d", &seatNo) != 1) {
+                    printf("Invalid seat number.\n");
+                    while (getchar() != '\n');
+                    break;
+                }
+
+                if (seatNo < 1 || seatNo > MAX_TICKETS) {
+                    printf("Seat number out of range.\n");
+                    break;
+                }
+
+                if (ticket[seatNo - 1].booked) {
+                    printf("Seat already booked.\n");
+                } else {
+
+                    printf("Enter Passenger Name: ");
+                    scanf(" %49[^\n]", ticket[seatNo - 1].name);
+
+                    ticket[seatNo - 1].booked = 1;
+
+                    printf("Ticket booked successfully.\n");
+                }
+
+                break;
+
+            case 3:
+
+                printf("Enter Seat Number to Cancel: ");
+
+                if (scanf("%d", &seatNo) != 1) {
+                    printf("Invalid seat number.\n");
+                    while (getchar() != '\n');
+                    break;
+                }
+
+                if (seatNo < 1 || seatNo > MAX_TICKETS) {
+                    printf("Seat number out of range.\n");
+                    break;
+                }
+
+                if (!ticket[seatNo - 1].booked) {
+                    printf("Seat is not booked.\n");
+                } else {
+
+                    ticket[seatNo - 1].booked = 0;
+                    ticket[seatNo - 1].name[0] = '\0';
+
+                    printf("Ticket cancelled successfully.\n");
+                }
+
+                break;
+
+            case 4:
+
+                found = 0;
+
+                printf("\n========== Booked Tickets ==========\n");
+
+                for (int i = 0; i < MAX_TICKETS; i++) {
+
+                    if (ticket[i].booked) {
+
+                        found = 1;
+
+                        printf("Seat No : %d\n", ticket[i].seatNo);
+                        printf("Passenger : %s\n", ticket[i].name);
+                        printf("----------------------------------\n");
+                    }
+                }
+
+                if (!found)
+                    printf("No tickets booked.\n");
+
+                break;
+
+            case 5:
+
+                printf("Thank you for using the Ticket Booking System.\n");
+                return 0;
+
+            default:
+
+                printf("Invalid choice! Please enter 1 to 5.\n");
+        }
+    }
+
+    return 0;
+}
+
+
+
+// Program to Create Contact Management System.
+
+#include <stdio.h>
+
+#define MAX_CONTACTS 100
+
+struct Contact {
+    int id;
+    char name[50];
+    char phone[15];
+};
+
+int main() {
+    struct Contact contact[MAX_CONTACTS];
+    int choice, count = 0, id, found;
+
+    while (1) {
+
+        printf("\n===== Contact Management System =====\n");
+        printf("1. Add Contact\n");
+        printf("2. Display All Contacts\n");
+        printf("3. Search Contact\n");
+        printf("4. Delete Contact\n");
+        printf("5. Exit\n");
+
+        printf("Enter your choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (choice) {
+
+            case 1:
+
+                if (count >= MAX_CONTACTS) {
+                    printf("Contact list is full!\n");
+                    break;
+                }
+
+                while (1) {
+
+                    int duplicate = 0;
+
+                    printf("Enter Contact ID: ");
+
+                    if (scanf("%d", &contact[count].id) != 1) {
+                        printf("Invalid Contact ID!\n");
+                        while (getchar() != '\n');
+                        continue;
+                    }
+
+                    for (int i = 0; i < count; i++) {
+                        if (contact[i].id == contact[count].id) {
+                            duplicate = 1;
+                            break;
+                        }
+                    }
+
+                    if (duplicate) {
+                        printf("Contact ID already exists!\n");
+                        continue;
+                    }
+
+                    break;
+                }
+
+                printf("Enter Name: ");
+                scanf(" %49[^\n]", contact[count].name);
+
+                printf("Enter Phone Number: ");
+                scanf(" %14s", contact[count].phone);
+
+                count++;
+
+                printf("Contact added successfully.\n");
+                break;
+
+            case 2:
+
+                if (count == 0) {
+                    printf("No contacts found.\n");
+                } else {
+
+                    printf("\n========== Contact List ==========\n");
+
+                    for (int i = 0; i < count; i++) {
+
+                        printf("\nContact %d\n", i + 1);
+                        printf("ID     : %d\n", contact[i].id);
+                        printf("Name   : %s\n", contact[i].name);
+                        printf("Phone  : %s\n", contact[i].phone);
+                        printf("----------------------------------\n");
+                    }
+                }
+
+                break;
+
+            case 3:
+
+                printf("Enter Contact ID to Search: ");
+                scanf("%d", &id);
+
+                found = 0;
+
+                for (int i = 0; i < count; i++) {
+
+                    if (contact[i].id == id) {
+
+                        found = 1;
+
+                        printf("\nContact Found\n");
+                        printf("ID     : %d\n", contact[i].id);
+                        printf("Name   : %s\n", contact[i].name);
+                        printf("Phone  : %s\n", contact[i].phone);
+
+                        break;
+                    }
+                }
+
+                if (!found)
+                    printf("Contact not found.\n");
+
+                break;
+
+            case 4:
+
+                printf("Enter Contact ID to Delete: ");
+                scanf("%d", &id);
+
+                found = 0;
+
+                for (int i = 0; i < count; i++) {
+
+                    if (contact[i].id == id) {
+
+                        found = 1;
+
+                        for (int j = i; j < count - 1; j++) {
+                            contact[j] = contact[j + 1];
+                        }
+
+                        count--;
+
+                        printf("Contact deleted successfully.\n");
+
+                        break;
+                    }
+                }
+
+                if (!found)
+                    printf("Contact not found.\n");
+
+                break;
+
+            case 5:
+
+                printf("Thank you for using the Contact Management System.\n");
+                return 0;
+
+            default:
+
+                printf("Invalid choice! Please enter 1 to 5.\n");
+        }
+    }
+
+    return 0;
+}
