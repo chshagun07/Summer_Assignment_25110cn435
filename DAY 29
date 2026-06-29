@@ -1,0 +1,720 @@
+//Program to create menu driven calculator
+#include <stdio.h>
+
+int main() {
+    int choice;
+    double a, b, result;
+
+    while (1) {
+        printf("\n===== CALCULATOR MENU =====\n");
+        printf("1. Addition\n");
+        printf("2. Subtraction\n");
+        printf("3. Multiplication\n");
+        printf("4. Division\n");
+        printf("5. Modulus (integers)\n");
+        printf("6. Exit\n");
+        printf("===========================\n");
+        printf("Enter your choice (1-6): ");
+        scanf("%d", &choice);
+
+        if (choice == 6) {
+            printf("Exiting calculator. Goodbye!\n");
+            break;
+        }
+
+        if (choice < 1 || choice > 6) {
+            printf("Invalid choice! Please enter a number between 1 and 6.\n");
+            continue;
+        }
+
+        printf("Enter first number: ");
+        scanf("%lf", &a);
+        printf("Enter second number: ");
+        scanf("%lf", &b);
+
+        switch (choice) {
+            case 1:
+                result = a + b;
+                printf("Result: %.2lf + %.2lf = %.2lf\n", a, b, result);
+                break;
+
+            case 2:
+                result = a - b;
+                printf("Result: %.2lf - %.2lf = %.2lf\n", a, b, result);
+                break;
+
+            case 3:
+                result = a * b;
+                printf("Result: %.2lf * %.2lf = %.2lf\n", a, b, result);
+                break;
+
+            case 4:
+                if (b == 0) {
+                    printf("Error: Division by zero is not allowed!\n");
+                } else {
+                    result = a / b;
+                    printf("Result: %.2lf / %.2lf = %.2lf\n", a, b, result);
+                }
+                break;
+
+            case 5:
+                if ((int)b == 0) {
+                    printf("Error: Modulus by zero is not allowed!\n");
+                } else {
+                    printf("Result: %d %% %d = %d\n", (int)a, (int)b, (int)a % (int)b);
+                }
+                break;
+        }
+    }
+
+    return 0;
+}
+
+// Program to create menu driven array operations system
+#include <stdio.h>
+#include <stdlib.h>
+
+// Struct to hold array data
+typedef struct {
+    int *data;
+    int size;
+    int capacity;
+} Array;
+
+// Initialize array
+void init(Array *a) {
+    a->capacity = 10;
+    a->size = 0;
+    a->data = (int *)malloc(a->capacity * sizeof(int));
+    printf("Array initialized with capacity %d\n", a->capacity);
+}
+
+// Auto-resize if full
+void resize(Array *a) {
+    a->capacity *= 2;
+    a->data = (int *)realloc(a->data, a->capacity * sizeof(int));
+    printf("Array resized to capacity %d\n", a->capacity);
+}
+
+// Display
+void display(Array *a) {
+    if (a->size == 0) { printf("Array is empty!\n"); return; }
+    printf("Array [%d elements]: ", a->size);
+    for (int i = 0; i < a->size; i++)
+        printf("[%d]=%d ", i, *(a->data + i));   // pointer arithmetic
+    printf("\n");
+}
+
+// Append at end
+void append(Array *a) {
+    if (a->size == a->capacity) resize(a);
+    int val;
+    printf("Enter value to append: ");
+    scanf("%d", &val);
+    *(a->data + a->size) = val;   // pointer arithmetic
+    a->size++;
+    printf("%d appended!\n", val);
+}
+
+// Insert at position
+void insert(Array *a) {
+    if (a->size == a->capacity) resize(a);
+    int pos, val;
+    printf("Enter position (0 to %d): ", a->size);
+    scanf("%d %d", &pos, &val);
+    if (pos < 0 || pos > a->size) { printf("Invalid position!\n"); return; }
+    for (int i = a->size; i > pos; i--)
+        *(a->data + i) = *(a->data + i - 1);
+    *(a->data + pos) = val;
+    a->size++;
+    printf("Inserted %d at index %d\n", val, pos);
+}
+
+// Delete by value
+void deleteByVal(Array *a) {
+    int val, found = 0;
+    printf("Enter value to delete: ");
+    scanf("%d", &val);
+    for (int i = 0; i < a->size; i++) {
+        if (*(a->data + i) == val) {
+            for (int j = i; j < a->size - 1; j++)
+                *(a->data + j) = *(a->data + j + 1);
+            a->size--;
+            found = 1;
+            printf("%d deleted!\n", val);
+            break;
+        }
+    }
+    if (!found) printf("%d not found!\n", val);
+}
+
+// Delete by index
+void deleteByIdx(Array *a) {
+    int pos;
+    if (a->size == 0) { printf("Array is empty!\n"); return; }
+    printf("Enter index to delete (0 to %d): ", a->size - 1);
+    scanf("%d", &pos);
+    if (pos < 0 || pos >= a->size) { printf("Invalid index!\n"); return; }
+    printf("Deleted value: %d\n", *(a->data + pos));
+    for (int i = pos; i < a->size - 1; i++)
+        *(a->data + i) = *(a->data + i + 1);
+    a->size--;
+}
+
+// Linear search
+void linearSearch(Array *a) {
+    int val;
+    printf("Enter value to search: ");
+    scanf("%d", &val);
+    for (int i = 0; i < a->size; i++)
+        if (*(a->data + i) == val)
+            { printf("Found %d at index %d\n", val, i); return; }
+    printf("%d not found!\n", val);
+}
+
+// Binary search (array must be sorted)
+void binarySearch(Array *a) {
+    int val, low = 0, high = a->size - 1, mid;
+    printf("Enter value to binary search (sort first!): ");
+    scanf("%d", &val);
+    while (low <= high) {
+        mid = (low + high) / 2;
+        if (*(a->data + mid) == val) { printf("Found %d at index %d\n", val, mid); return; }
+        else if (*(a->data + mid) < val) low = mid + 1;
+        else high = mid - 1;
+    }
+    printf("%d not found!\n", val);
+}
+
+// Sort using selection sort
+void sort(Array *a) {
+    for (int i = 0; i < a->size - 1; i++) {
+        int minIdx = i;
+        for (int j = i + 1; j < a->size; j++)
+            if (*(a->data + j) < *(a->data + minIdx)) minIdx = j;
+        int temp = *(a->data + i);
+        *(a->data + i) = *(a->data + minIdx);
+        *(a->data + minIdx) = temp;
+    }
+    printf("Sorted (Selection Sort)!\n");
+    display(a);
+}
+
+// Reverse using two pointers
+void reverse(Array *a) {
+    int *left = a->data, *right = a->data + a->size - 1;
+    while (left < right) {
+        int temp = *left; *left = *right; *right = temp;
+        left++; right--;
+    }
+    printf("Reversed!\n");
+    display(a);
+}
+
+// Stats: min, max, sum, avg
+void stats(Array *a) {
+    if (a->size == 0) { printf("Array is empty!\n"); return; }
+    int min = *a->data, max = *a->data, sum = 0;
+    for (int i = 0; i < a->size; i++) {
+        int v = *(a->data + i);
+        if (v < min) min = v;
+        if (v > max) max = v;
+        sum += v;
+    }
+    printf("Min=%d | Max=%d | Sum=%d | Avg=%.2f\n", min, max, sum, (float)sum / a->size);
+}
+
+// Count even and odd
+void evenOdd(Array *a) {
+    int e = 0, o = 0;
+    for (int i = 0; i < a->size; i++)
+        *(a->data + i) % 2 == 0 ? e++ : o++;
+    printf("Even = %d, Odd = %d\n", e, o);
+}
+
+// Copy array
+void copyArr(Array *a, Array *b) {
+    free(b->data);
+    b->size = a->size;
+    b->capacity = a->capacity;
+    b->data = (int *)malloc(b->capacity * sizeof(int));
+    for (int i = 0; i < a->size; i++)
+        *(b->data + i) = *(a->data + i);
+    printf("Array copied! Copy: ");
+    for (int i = 0; i < b->size; i++) printf("%d ", *(b->data + i));
+    printf("\n");
+}
+
+// Free memory
+void freeArr(Array *a) {
+    free(a->data);
+    a->data = NULL;
+    a->size = a->capacity = 0;
+    printf("Memory freed!\n");
+}
+
+int main() {
+    Array a, b;
+    init(&a);
+    init(&b);
+    int ch;
+
+    while (1) {
+        printf("\n======= ARRAY OPERATIONS =======\n");
+        printf(" 1. Append         2. Insert\n");
+        printf(" 3. Delete by Val  4. Delete by Index\n");
+        printf(" 5. Display        6. Linear Search\n");
+        printf(" 7. Binary Search  8. Sort\n");
+        printf(" 9. Reverse       10. Stats\n");
+        printf("11. Even/Odd      12. Copy Array\n");
+        printf("13. Free Memory    0. Exit\n");
+        printf("=================================\n");
+        printf("Choice: ");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case  1: append(&a);           break;
+            case  2: insert(&a);           break;
+            case  3: deleteByVal(&a);      break;
+            case  4: deleteByIdx(&a);      break;
+            case  5: display(&a);          break;
+            case  6: linearSearch(&a);     break;
+            case  7: binarySearch(&a);     break;
+            case  8: sort(&a);             break;
+            case  9: reverse(&a);          break;
+            case 10: stats(&a);            break;
+            case 11: evenOdd(&a);          break;
+            case 12: copyArr(&a, &b);      break;
+            case 13: freeArr(&a);          break;
+            case  0: freeArr(&a); freeArr(&b); printf("Bye!\n"); return 0;
+            default: printf("Invalid choice!\n");
+        }
+    }
+}
+
+
+//Program to create menu driven string operation system 
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define MAX 1000
+
+char str[MAX];
+void inputStr() {
+    printf("Enter string: ");
+    getchar();
+    fgets(str, MAX, stdin);
+    // remove trailing newline
+    for (int i = 0; str[i]; i++)
+        if (str[i] == '\n') { str[i] = '\0'; break; }
+    printf("String stored!\n");
+}
+void display() {
+    if (str[0] == '\0') { printf("String is empty!\n"); return; }
+    printf("String: \"%s\"\n", str);
+}
+void length() {
+    int len = 0;
+    while (str[len]) len++;
+    printf("Length = %d\n", len);
+}
+void copyStr() {
+    char dest[MAX];
+    int i = 0;
+    while ((dest[i] = str[i])) i++;
+    printf("Copied String: \"%s\"\n", dest);
+}
+void concat() {
+    char s2[MAX];
+    printf("Enter string to concatenate: ");
+    getchar();
+    fgets(s2, MAX, stdin);
+    for (int i = 0; s2[i]; i++)
+        if (s2[i] == '\n') { s2[i] = '\0'; break; }
+
+    int i = 0;
+    while (str[i]) i++;           // go to end of str
+    for (int j = 0; (str[i] = s2[j]); i++, j++);
+    printf("After Concat: \"%s\"\n", str);
+}
+void compareStr() {
+    char s2[MAX];
+    printf("Enter string to compare: ");
+    getchar();
+    fgets(s2, MAX, stdin);
+    for (int i = 0; s2[i]; i++)
+        if (s2[i] == '\n') { s2[i] = '\0'; break; }
+
+    int i = 0;
+    while (str[i] && s2[i] && str[i] == s2[i]) i++;
+    if (str[i] - s2[i] == 0)      printf("Strings are EQUAL\n");
+    else if (str[i] - s2[i] > 0)  printf("String 1 is GREATER\n");
+    else                           printf("String 2 is GREATER\n");
+}
+void reverse() {
+    int len = 0;
+    while (str[len]) len++;
+    char *l = str, *r = str + len - 1;
+    while (l < r) {
+        char t = *l; *l = *r; *r = t;
+        l++; r--;
+    }
+    printf("Reversed: \"%s\"\n", str);
+}
+void palindrome() {
+    int len = 0, flag = 1;
+    while (str[len]) len++;
+    for (int i = 0; i < len / 2; i++)
+        if (str[i] != str[len - 1 - i]) { flag = 0; break; }
+    printf("\"%s\" is %s palindrome\n", str, flag ? "a" : "NOT a");
+}
+void toUpper() {
+    for (int i = 0; str[i]; i++)
+        if (str[i] >= 'a' && str[i] <= 'z') str[i] -= 32;
+    printf("Uppercase: \"%s\"\n", str);
+}
+
+void toLower() {
+    for (int i = 0; str[i]; i++)
+        if (str[i] >= 'A' && str[i] <= 'Z') str[i] += 32;
+    printf("Lowercase: \"%s\"\n", str);
+}
+void toggleCase() {
+    for (int i = 0; str[i]; i++) {
+        if (str[i] >= 'a' && str[i] <= 'z') str[i] -= 32;
+        else if (str[i] >= 'A' && str[i] <= 'Z') str[i] += 32;
+    }
+    printf("Toggled: \"%s\"\n", str);
+}
+void countChars() {
+    int v = 0, c = 0, s = 0, d = 0, sp = 0;
+    for (int i = 0; str[i]; i++) {
+        char ch = tolower(str[i]);
+        if (ch=='a'||ch=='e'||ch=='i'||ch=='o'||ch=='u') v++;
+        else if (ch >= 'a' && ch <= 'z') c++;
+        else if (ch >= '0' && ch <= '9') d++;
+        else if (ch == ' ') s++;
+        else sp++;
+    }
+    printf("Vowels=%d | Consonants=%d | Digits=%d | Spaces=%d | Special=%d\n", v, c, d, s, sp);
+}
+void wordCount() {
+    int count = 0, inWord = 0;
+    for (int i = 0; str[i]; i++) {
+        if (str[i] != ' ' && !inWord) { count++; inWord = 1; }
+        else if (str[i] == ' ')       inWord = 0;
+    }
+    printf("Word Count = %d\n", count);
+}
+void searchSub() {
+    char sub[MAX];
+    printf("Enter substring to search: ");
+    getchar();
+    fgets(sub, MAX, stdin);
+    for (int i = 0; sub[i]; i++)
+        if (sub[i] == '\n') { sub[i] = '\0'; break; }
+
+    int found = 0;
+    for (int i = 0; str[i]; i++) {
+        int j = 0;
+        while (str[i+j] && sub[j] && str[i+j] == sub[j]) j++;
+        if (!sub[j]) { printf("Substring found at index %d\n", i); found = 1; }
+    }
+    if (!found) printf("Substring not found!\n");
+}
+void replaceSub() {
+    char old[MAX], newS[MAX], result[MAX];
+    printf("Enter substring to replace: ");
+    getchar();
+    fgets(old, MAX, stdin);
+    for (int i = 0; old[i]; i++) if (old[i]=='\n') { old[i]='\0'; break; }
+    printf("Enter new substring: ");
+    fgets(newS, MAX, stdin);
+    for (int i = 0; newS[i]; i++) if (newS[i]=='\n') { newS[i]='\0'; break; }
+
+    int i = 0, r = 0;
+    int olen = 0, nlen = 0;
+    while (old[olen]) olen++;
+    while (newS[nlen]) nlen++;
+
+    while (str[i]) {
+        int j = 0;
+        while (str[i+j] && old[j] && str[i+j] == old[j]) j++;
+        if (!old[j]) {
+            for (int k = 0; k < nlen; k++) result[r++] = newS[k];
+            i += olen;
+        } else result[r++] = str[i++];
+    }
+    result[r] = '\0';
+
+    for (int k = 0; (str[k] = result[k]); k++);
+    printf("After Replace: \"%s\"\n", str);
+}
+
+void removeSpaces() {
+    int j = 0;
+    for (int i = 0; str[i]; i++)
+        if (str[i] != ' ') str[j++] = str[i];
+    str[j] = '\0';
+    printf("Without Spaces: \"%s\"\n", str);
+}
+void removeDuplicates() {
+    int seen[256] = {0};
+    int j = 0;
+    for (int i = 0; str[i]; i++) {
+        if (!seen[(unsigned char)str[i]]) {
+            seen[(unsigned char)str[i]] = 1;
+            str[j++] = str[i];
+        }
+    }
+    str[j] = '\0';
+    printf("Without Duplicates: \"%s\"\n", str);
+}
+void charFrequency() {
+    int freq[256] = {0};
+    for (int i = 0; str[i]; i++) freq[(unsigned char)str[i]]++;
+    printf("Character Frequencies:\n");
+    for (int i = 0; i < 256; i++)
+        if (freq[i]) printf("  '%c' = %d\n", i, freq[i]);
+}
+void anagram() {
+    char s2[MAX];
+    printf("Enter second string: ");
+    getchar();
+    fgets(s2, MAX, stdin);
+    for (int i = 0; s2[i]; i++) if (s2[i]=='\n') { s2[i]='\0'; break; }
+
+    int f1[256] = {0}, f2[256] = {0};
+    for (int i = 0; str[i]; i++) f1[(unsigned char)tolower(str[i])]++;
+    for (int i = 0; s2[i];  i++) f2[(unsigned char)tolower(s2[i])]++;
+
+    for (int i = 0; i < 256; i++)
+        if (f1[i] != f2[i]) { printf("NOT Anagram\n"); return; }
+    printf("Strings ARE Anagram!\n");
+}
+
+
+void extractSub() {
+    int start, len;
+    printf("Enter start index and length: ");
+    scanf("%d %d", &start, &len);
+    printf("Substring: \"");
+    for (int i = start; i < start + len && str[i]; i++) printf("%c", str[i]);
+    printf("\"\n");
+}
+void capitalize() {
+    int newWord = 1;
+    for (int i = 0; str[i]; i++) {
+        if (str[i] == ' ') newWord = 1;
+        else if (newWord) { str[i] = toupper(str[i]); newWord = 0; }
+        else str[i] = tolower(str[i]);
+    }
+    printf("Capitalized: \"%s\"\n", str);
+}
+int main() {
+    int ch;
+    str[0] = '\0';
+
+    while (1) {
+        printf("\n======== STRING OPERATIONS ========\n");
+        printf(" 1. Input String      2. Display\n");
+        printf(" 3. Length            4. Copy\n");
+        printf(" 5. Concatenate       6. Compare\n");
+        printf(" 7. Reverse           8. Palindrome\n");
+        printf(" 9. To Uppercase     10. To Lowercase\n");
+        printf("11. Toggle Case      12. Count Chars\n");
+        printf("13. Word Count       14. Search Substring\n");
+        printf("15. Replace Substring 16. Remove Spaces\n");
+        printf("17. Remove Duplicates 18. Char Frequency\n");
+        printf("19. Anagram Check    20. Extract Substring\n");
+        printf("21. Capitalize Words  0. Exit\n");
+        printf("===================================\n");
+        printf("Choice: ");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case  1: inputStr();       break;
+            case  2: display();        break;
+            case  3: length();         break;
+            case  4: copyStr();        break;
+            case  5: concat();         break;
+            case  6: compareStr();     break;
+            case  7: reverse();        break;
+            case  8: palindrome();     break;
+            case  9: toUpper();        break;
+            case 10: toLower();        break;
+            case 11: toggleCase();     break;
+            case 12: countChars();     break;
+            case 13: wordCount();      break;
+            case 14: searchSub();      break;
+            case 15: replaceSub();     break;
+            case 16: removeSpaces();   break;
+            case 17: removeDuplicates(); break;
+            case 18: charFrequency();  break;
+            case 19: anagram();        break;
+            case 20: extractSub();     break;
+            case 21: capitalize();     break;
+            case  0: printf("Bye!\n"); return 0;
+            default: printf("Invalid choice!\n");
+        }
+    }
+}
+
+
+//Program to create inventory management system
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_ITEMS 100
+typedef struct {
+    int id;
+    char name[50];
+    int quantity;
+    float price;
+} Item;
+
+
+Item inventory[MAX_ITEMS];
+int itemCount = 0; 
+
+void addItem();
+void viewInventory();
+void searchItem();
+void updateStock();
+void displayMenu();
+
+int main() {
+    int choice;
+
+    while (1) {
+        displayMenu();
+        printf("Enter your choice (1-5): ");
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input. Please enter a number.\n");
+            while (getchar() != '\n'); // Clear input buffer
+            continue;
+        }
+
+        switch (choice) {
+            case 1:
+                addItem();
+                break;
+            case 2:
+                viewInventory();
+                break;
+            case 3:
+                searchItem();
+                break;
+            case 4:
+                updateStock();
+                break;
+            case 5:
+                printf("\nExiting program. Goodbye!\n");
+                return 0;
+            default:
+                printf("Invalid choice! Please select between 1 and 5.\n");
+        }
+    }
+    return 0;
+}
+void displayMenu() {
+    printf("\n=================================");
+    printf("\n    INVENTORY MANAGEMENT SYSTEM   ");
+    printf("\n=================================");
+    printf("\n1. Add New Item");
+    printf("\n2. View All Items");
+    printf("\n3. Search Item by ID");
+    printf("\n4. Update Item Stock");
+    printf("\n5. Exit");
+    printf("\n=================================\n");
+}
+void addItem() {
+    if (itemCount >= MAX_ITEMS) {
+        printf("\nError: Inventory is full!\n");
+        return;
+    }
+
+    Item newItem;
+    printf("\nEnter Item ID: ");
+    scanf("%d", &newItem.id);
+    for (int i = 0; i < itemCount; i++) {
+        if (inventory[i].id == newItem.id) {
+            printf("Error: An item with ID %d already exists.\n", newItem.id);
+            return;
+        }
+    }
+
+    printf("Enter Item Name: ");
+    scanf(" %[^\n]s", newItem.name); // Reads strings with spaces
+
+    printf("Enter Quantity: ");
+    scanf("%d", &newItem.quantity);
+
+    printf("Enter Price: ");
+    scanf("%f", &newItem.price);
+
+    inventory[itemCount] = newItem;
+    itemCount++;
+    printf("\nItem added successfully!\n");
+}
+void viewInventory() {
+    if (itemCount == 0) {
+        printf("\nInventory is empty.\n");
+        return;
+    }
+
+    printf("\n---------------------------------------------------------");
+    printf("\n%-10s %-25s %-10s %-10s", "ID", "Name", "Quantity", "Price");
+    printf("\n---------------------------------------------------------");
+    for (int i = 0; i < itemCount; i++) {
+        printf("\n%-10d %-25s %-10d $%-9.2f", 
+               inventory[i].id, inventory[i].name, inventory[i].quantity, inventory[i].price);
+    }
+    printf("\n---------------------------------------------------------\n");
+}
+void searchItem() {
+    if (itemCount == 0) {
+        printf("\nInventory is empty.\n");
+        return;
+    }
+
+    int searchId;
+    printf("\nEnter Item ID to search: ");
+    scanf("%d", &searchId);
+
+    for (int i = 0; i < itemCount; i++) {
+        if (inventory[i].id == searchId) {
+            printf("\nItem Found!");
+            printf("\nID: %d", inventory[i].id);
+            printf("\nName: %s", inventory[i].name);
+            printf("\nQuantity: %d", inventory[i].quantity);
+            printf("\nPrice: $%.2f\n", inventory[i].price);
+            return;
+        }
+    }
+    printf("\nItem with ID %d not found.\n", searchId);
+}
+void updateStock() {
+    if (itemCount == 0) {
+        printf("\nInventory is empty.\n");
+        return;
+    }
+
+    int searchId, newQuantity;
+    printf("\nEnter Item ID to update stock: ");
+    scanf("%d", &searchId);
+
+    for (int i = 0; i < itemCount; i++) {
+        if (inventory[i].id == searchId) {
+            printf("Current Quantity of %s: %d\n", inventory[i].name, inventory[i].quantity);
+            printf("Enter New Quantity: ");
+            scanf("%d", &newQuantity);
+            
+            inventory[i].quantity = newQuantity;
+            printf("\nStock updated successfully!\n");
+            return;
+        }
+    }
+    printf("\nItem with ID %d not found.\n", searchId);
+}
