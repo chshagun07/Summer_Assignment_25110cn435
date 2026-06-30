@@ -1,0 +1,860 @@
+// Program to Create Student Record System using Arrays and Strings.
+
+#include <stdio.h>
+
+#define MAX_STUDENTS 100
+
+struct Student {
+    int rollNo;
+    char name[50];
+    float marks;
+};
+
+void addStudent(struct Student s[], int *count);
+void displayStudents(struct Student s[], int count);
+void searchStudent(struct Student s[], int count);
+void deleteStudent(struct Student s[], int *count);
+
+int main() {
+
+    struct Student s[MAX_STUDENTS];
+    int choice, count = 0;
+
+    while (1) {
+
+        printf("\n===== Student Record System =====\n");
+        printf("1. Add Student\n");
+        printf("2. Display All Students\n");
+        printf("3. Search Student\n");
+        printf("4. Delete Student\n");
+        printf("5. Exit\n");
+
+        printf("Enter your choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (choice) {
+
+            case 1:
+                addStudent(s, &count);
+                break;
+
+            case 2:
+                displayStudents(s, count);
+                break;
+
+            case 3:
+                searchStudent(s, count);
+                break;
+
+            case 4:
+                deleteStudent(s, &count);
+                break;
+
+            case 5:
+                printf("Thank you!\n");
+                return 0;
+
+            default:
+                printf("Invalid choice! Please enter 1 to 5.\n");
+        }
+    }
+}
+
+void addStudent(struct Student s[], int *count) {
+
+    if (*count >= MAX_STUDENTS) {
+        printf("Database is full!\n");
+        return;
+    }
+
+    int duplicate;
+
+    while (1) {
+
+        duplicate = 0;
+
+        printf("Enter Roll Number: ");
+
+        if (scanf("%d", &s[*count].rollNo) != 1) {
+            printf("Invalid Roll Number!\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        for (int i = 0; i < *count; i++) {
+            if (s[i].rollNo == s[*count].rollNo) {
+                duplicate = 1;
+                break;
+            }
+        }
+
+        if (duplicate) {
+            printf("Roll Number already exists!\n");
+            continue;
+        }
+
+        break;
+    }
+
+    printf("Enter Student Name: ");
+    scanf(" %49[^\n]", s[*count].name);
+
+    while (1) {
+
+        printf("Enter Marks (0-100): ");
+
+        if (scanf("%f", &s[*count].marks) != 1) {
+            printf("Invalid input!\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        if (s[*count].marks < 0 || s[*count].marks > 100) {
+            printf("Marks should be between 0 and 100.\n");
+            continue;
+        }
+
+        break;
+    }
+
+    (*count)++;
+
+    printf("Student added successfully.\n");
+}
+
+void displayStudents(struct Student s[], int count) {
+
+    if (count == 0) {
+        printf("No student records found.\n");
+        return;
+    }
+
+    printf("\n========== Student Records ==========\n");
+
+    for (int i = 0; i < count; i++) {
+
+        printf("\nStudent %d\n", i + 1);
+        printf("Roll Number : %d\n", s[i].rollNo);
+        printf("Name        : %s\n", s[i].name);
+        printf("Marks       : %.2f\n", s[i].marks);
+        printf("------------------------------------\n");
+    }
+}
+
+void searchStudent(struct Student s[], int count) {
+
+    int rollNo;
+    int found = 0;
+
+    printf("Enter Roll Number: ");
+    scanf("%d", &rollNo);
+
+    for (int i = 0; i < count; i++) {
+
+        if (s[i].rollNo == rollNo) {
+
+            printf("\nStudent Found\n");
+            printf("Roll Number : %d\n", s[i].rollNo);
+            printf("Name        : %s\n", s[i].name);
+            printf("Marks       : %.2f\n", s[i].marks);
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Student not found.\n");
+}
+
+void deleteStudent(struct Student s[], int *count) {
+
+    int rollNo;
+    int found = 0;
+
+    printf("Enter Roll Number to Delete: ");
+    scanf("%d", &rollNo);
+
+    for (int i = 0; i < *count; i++) {
+
+        if (s[i].rollNo == rollNo) {
+
+            for (int j = i; j < *count - 1; j++) {
+                s[j] = s[j + 1];
+            }
+
+            (*count)--;
+
+            printf("Student record deleted successfully.\n");
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Student not found.\n");
+}
+
+
+// Program to Create Mini Library System.
+
+#include <stdio.h>
+
+#define MAX_BOOKS 100
+
+struct Book {
+    int id;
+    char title[50];
+    char author[50];
+    int available;
+};
+
+void addBook(struct Book book[], int *count);
+void displayBooks(struct Book book[], int count);
+void issueBook(struct Book book[], int count);
+void returnBook(struct Book book[], int count);
+
+int main() {
+
+    struct Book book[MAX_BOOKS];
+    int choice, count = 0;
+
+    while (1) {
+
+        printf("\n===== Mini Library System =====\n");
+        printf("1. Add Book\n");
+        printf("2. Display All Books\n");
+        printf("3. Issue Book\n");
+        printf("4. Return Book\n");
+        printf("5. Exit\n");
+
+        printf("Enter your choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (choice) {
+
+            case 1:
+                addBook(book, &count);
+                break;
+
+            case 2:
+                displayBooks(book, count);
+                break;
+
+            case 3:
+                issueBook(book, count);
+                break;
+
+            case 4:
+                returnBook(book, count);
+                break;
+
+            case 5:
+                printf("Thank you for using the Mini Library System.\n");
+                return 0;
+
+            default:
+                printf("Invalid choice! Please enter 1 to 5.\n");
+        }
+    }
+}
+
+void addBook(struct Book book[], int *count) {
+
+    if (*count >= MAX_BOOKS) {
+        printf("Library is full!\n");
+        return;
+    }
+
+    int duplicate;
+
+    while (1) {
+
+        duplicate = 0;
+
+        printf("Enter Book ID: ");
+
+        if (scanf("%d", &book[*count].id) != 1) {
+            printf("Invalid Book ID!\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        for (int i = 0; i < *count; i++) {
+            if (book[i].id == book[*count].id) {
+                duplicate = 1;
+                break;
+            }
+        }
+
+        if (duplicate) {
+            printf("Book ID already exists!\n");
+            continue;
+        }
+
+        break;
+    }
+
+    printf("Enter Book Title: ");
+    scanf(" %49[^\n]", book[*count].title);
+
+    printf("Enter Author Name: ");
+    scanf(" %49[^\n]", book[*count].author);
+
+    book[*count].available = 1;
+
+    (*count)++;
+
+    printf("Book added successfully.\n");
+}
+
+void displayBooks(struct Book book[], int count) {
+
+    if (count == 0) {
+        printf("No books available.\n");
+        return;
+    }
+
+    printf("\n========== Library Books ==========\n");
+
+    for (int i = 0; i < count; i++) {
+
+        printf("\nBook %d\n", i + 1);
+        printf("Book ID : %d\n", book[i].id);
+        printf("Title   : %s\n", book[i].title);
+        printf("Author  : %s\n", book[i].author);
+
+        if (book[i].available)
+            printf("Status  : Available\n");
+        else
+            printf("Status  : Issued\n");
+
+        printf("-----------------------------------\n");
+    }
+}
+
+void issueBook(struct Book book[], int count) {
+
+    int id;
+    int found = 0;
+
+    printf("Enter Book ID to Issue: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < count; i++) {
+
+        if (book[i].id == id) {
+
+            found = 1;
+
+            if (book[i].available) {
+                book[i].available = 0;
+                printf("Book issued successfully.\n");
+            }
+            else {
+                printf("Book is already issued.\n");
+            }
+
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Book not found.\n");
+}
+
+void returnBook(struct Book book[], int count) {
+
+    int id;
+    int found = 0;
+
+    printf("Enter Book ID to Return: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < count; i++) {
+
+        if (book[i].id == id) {
+
+            found = 1;
+
+            if (!book[i].available) {
+                book[i].available = 1;
+                printf("Book returned successfully.\n");
+            }
+            else {
+                printf("Book is already available.\n");
+            }
+
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Book not found.\n");
+}
+
+
+// Program to Create Mini Employee Management System.
+
+#include <stdio.h>
+
+#define MAX_EMPLOYEES 100
+
+struct Employee {
+    int id;
+    char name[50];
+    float salary;
+};
+
+void addEmployee(struct Employee emp[], int *count);
+void displayEmployees(struct Employee emp[], int count);
+void searchEmployee(struct Employee emp[], int count);
+void deleteEmployee(struct Employee emp[], int *count);
+
+int main() {
+
+    struct Employee emp[MAX_EMPLOYEES];
+    int choice, count = 0;
+
+    while (1) {
+
+        printf("\n===== Mini Employee Management System =====\n");
+        printf("1. Add Employee\n");
+        printf("2. Display All Employees\n");
+        printf("3. Search Employee\n");
+        printf("4. Delete Employee\n");
+        printf("5. Exit\n");
+
+        printf("Enter your choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (choice) {
+
+            case 1:
+                addEmployee(emp, &count);
+                break;
+
+            case 2:
+                displayEmployees(emp, count);
+                break;
+
+            case 3:
+                searchEmployee(emp, count);
+                break;
+
+            case 4:
+                deleteEmployee(emp, &count);
+                break;
+
+            case 5:
+                printf("Thank you for using the Mini Employee Management System.\n");
+                return 0;
+
+            default:
+                printf("Invalid choice! Please enter 1 to 5.\n");
+        }
+    }
+}
+
+void addEmployee(struct Employee emp[], int *count) {
+
+    if (*count >= MAX_EMPLOYEES) {
+        printf("Database is full!\n");
+        return;
+    }
+
+    int duplicate;
+
+    while (1) {
+
+        duplicate = 0;
+
+        printf("Enter Employee ID: ");
+
+        if (scanf("%d", &emp[*count].id) != 1) {
+            printf("Invalid Employee ID!\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        for (int i = 0; i < *count; i++) {
+            if (emp[i].id == emp[*count].id) {
+                duplicate = 1;
+                break;
+            }
+        }
+
+        if (duplicate) {
+            printf("Employee ID already exists!\n");
+            continue;
+        }
+
+        break;
+    }
+
+    printf("Enter Employee Name: ");
+    scanf(" %49[^\n]", emp[*count].name);
+
+    while (1) {
+
+        printf("Enter Salary: ");
+
+        if (scanf("%f", &emp[*count].salary) != 1) {
+            printf("Invalid salary!\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        if (emp[*count].salary < 0) {
+            printf("Salary cannot be negative.\n");
+            continue;
+        }
+
+        break;
+    }
+
+    (*count)++;
+
+    printf("Employee added successfully.\n");
+}
+
+void displayEmployees(struct Employee emp[], int count) {
+
+    if (count == 0) {
+        printf("No employee records found.\n");
+        return;
+    }
+
+    printf("\n========== Employee Records ==========\n");
+
+    for (int i = 0; i < count; i++) {
+
+        printf("\nEmployee %d\n", i + 1);
+        printf("Employee ID : %d\n", emp[i].id);
+        printf("Name        : %s\n", emp[i].name);
+        printf("Salary      : %.2f\n", emp[i].salary);
+        printf("--------------------------------------\n");
+    }
+}
+
+void searchEmployee(struct Employee emp[], int count) {
+
+    int id;
+    int found = 0;
+
+    printf("Enter Employee ID: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < count; i++) {
+
+        if (emp[i].id == id) {
+
+            printf("\nEmployee Found\n");
+            printf("Employee ID : %d\n", emp[i].id);
+            printf("Name        : %s\n", emp[i].name);
+            printf("Salary      : %.2f\n", emp[i].salary);
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Employee not found.\n");
+}
+
+void deleteEmployee(struct Employee emp[], int *count) {
+
+    int id;
+    int found = 0;
+
+    printf("Enter Employee ID to Delete: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < *count; i++) {
+
+        if (emp[i].id == id) {
+
+            for (int j = i; j < *count - 1; j++) {
+                emp[j] = emp[j + 1];
+            }
+
+            (*count)--;
+
+            printf("Employee deleted successfully.\n");
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Employee not found.\n");
+}
+
+
+// Develop Complete Mini Project using Arrays, Strings and Functions.
+
+#include <stdio.h>
+
+#define MAX_STUDENTS 100
+
+struct Student {
+    int rollNo;
+    char name[50];
+    float marks;
+};
+
+void addStudent(struct Student s[], int *count);
+void displayStudents(struct Student s[], int count);
+void searchStudent(struct Student s[], int count);
+void updateStudent(struct Student s[], int count);
+void deleteStudent(struct Student s[], int *count);
+
+int main() {
+
+    struct Student s[MAX_STUDENTS];
+    int choice, count = 0;
+
+    while (1) {
+
+        printf("\n========== Student Management System ==========\n");
+        printf("1. Add Student\n");
+        printf("2. Display All Students\n");
+        printf("3. Search Student\n");
+        printf("4. Update Student Marks\n");
+        printf("5. Delete Student\n");
+        printf("6. Exit\n");
+
+        printf("Enter your choice: ");
+
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (choice) {
+
+            case 1:
+                addStudent(s, &count);
+                break;
+
+            case 2:
+                displayStudents(s, count);
+                break;
+
+            case 3:
+                searchStudent(s, count);
+                break;
+
+            case 4:
+                updateStudent(s, count);
+                break;
+
+            case 5:
+                deleteStudent(s, &count);
+                break;
+
+            case 6:
+                printf("Thank you for using the Student Management System.\n");
+                return 0;
+
+            default:
+                printf("Invalid choice! Please enter 1 to 6.\n");
+        }
+    }
+}
+
+void addStudent(struct Student s[], int *count) {
+
+    if (*count >= MAX_STUDENTS) {
+        printf("Database is full!\n");
+        return;
+    }
+
+    int duplicate;
+
+    while (1) {
+
+        duplicate = 0;
+
+        printf("Enter Roll Number: ");
+
+        if (scanf("%d", &s[*count].rollNo) != 1) {
+            printf("Invalid Roll Number!\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        for (int i = 0; i < *count; i++) {
+            if (s[i].rollNo == s[*count].rollNo) {
+                duplicate = 1;
+                break;
+            }
+        }
+
+        if (duplicate) {
+            printf("Roll Number already exists!\n");
+            continue;
+        }
+
+        break;
+    }
+
+    printf("Enter Student Name: ");
+    scanf(" %49[^\n]", s[*count].name);
+
+    while (1) {
+
+        printf("Enter Marks (0-100): ");
+
+        if (scanf("%f", &s[*count].marks) != 1) {
+            printf("Invalid input!\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        if (s[*count].marks < 0 || s[*count].marks > 100) {
+            printf("Marks should be between 0 and 100.\n");
+            continue;
+        }
+
+        break;
+    }
+
+    (*count)++;
+
+    printf("Student added successfully.\n");
+}
+
+void displayStudents(struct Student s[], int count) {
+
+    if (count == 0) {
+        printf("No student records found.\n");
+        return;
+    }
+
+    printf("\n========== Student Records ==========\n");
+
+    for (int i = 0; i < count; i++) {
+
+        printf("\nStudent %d\n", i + 1);
+        printf("Roll Number : %d\n", s[i].rollNo);
+        printf("Name        : %s\n", s[i].name);
+        printf("Marks       : %.2f\n", s[i].marks);
+        printf("-------------------------------------\n");
+    }
+}
+
+void searchStudent(struct Student s[], int count) {
+
+    int rollNo;
+    int found = 0;
+
+    printf("Enter Roll Number: ");
+    scanf("%d", &rollNo);
+
+    for (int i = 0; i < count; i++) {
+
+        if (s[i].rollNo == rollNo) {
+
+            printf("\nStudent Found\n");
+            printf("Roll Number : %d\n", s[i].rollNo);
+            printf("Name        : %s\n", s[i].name);
+            printf("Marks       : %.2f\n", s[i].marks);
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Student not found.\n");
+}
+
+void updateStudent(struct Student s[], int count) {
+
+    int rollNo;
+    int found = 0;
+
+    printf("Enter Roll Number: ");
+    scanf("%d", &rollNo);
+
+    for (int i = 0; i < count; i++) {
+
+        if (s[i].rollNo == rollNo) {
+
+            found = 1;
+
+            while (1) {
+
+                printf("Enter New Marks: ");
+
+                if (scanf("%f", &s[i].marks) != 1) {
+                    printf("Invalid input!\n");
+                    while (getchar() != '\n');
+                    continue;
+                }
+
+                if (s[i].marks < 0 || s[i].marks > 100) {
+                    printf("Marks should be between 0 and 100.\n");
+                    continue;
+                }
+
+                break;
+            }
+
+            printf("Marks updated successfully.\n");
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Student not found.\n");
+}
+
+void deleteStudent(struct Student s[], int *count) {
+
+    int rollNo;
+    int found = 0;
+
+    printf("Enter Roll Number to Delete: ");
+    scanf("%d", &rollNo);
+
+    for (int i = 0; i < *count; i++) {
+
+        if (s[i].rollNo == rollNo) {
+
+            for (int j = i; j < *count - 1; j++) {
+                s[j] = s[j + 1];
+            }
+
+            (*count)--;
+
+            printf("Student deleted successfully.\n");
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Student not found.\n");
+}
